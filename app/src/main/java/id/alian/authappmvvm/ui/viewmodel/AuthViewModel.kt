@@ -16,8 +16,9 @@ class AuthViewModel : ViewModel() {
         authListener?.onStarted()
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
             authListener?.onError("Invalid email or password")
+        } else {
+            val loginResponse = UserRepository().login(email!!, password!!)
+            authListener?.onSuccess(loginResponse)
         }
-        val loginResponse = UserRepository().login(email!!, password!!)
-        authListener?.onSuccess(loginResponse)
     }
 }

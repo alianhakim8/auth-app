@@ -48,6 +48,6 @@ class LoginActivity : AppCompatActivity(), AuthListener {
 
     override fun onError(message: String) {
         progressBar.hide()
-        toast("on error")
+        toast(message)
     }
 }
