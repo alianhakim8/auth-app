@@ -1,7 +1,7 @@
 package id.alian.authappmvvm.data.network
 
-import okhttp3.ResponseBody
-import retrofit2.Call
+import id.alian.authappmvvm.data.network.responses.AuthResponse
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
@@ -12,10 +12,10 @@ interface Api {
 
     @FormUrlEncoded
     @POST("login")
-    fun login(
+    suspend fun login(
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<ResponseBody>
+    ): Response<AuthResponse>
 
     companion object {
         // same as calling :
@@ -28,6 +28,5 @@ interface Api {
                 .create(Api::class.java)
         }
     }
-
 }
 

@@ -5,9 +5,9 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import id.alian.authappmvvm.R
+import id.alian.authappmvvm.data.db.entities.User
 import id.alian.authappmvvm.databinding.ActivityLoginBinding
 import id.alian.authappmvvm.ui.viewmodel.AuthViewModel
 import id.alian.authappmvvm.ui.viewmodel.AuthViewModelProviderFactory
@@ -39,11 +39,8 @@ class LoginActivity : AppCompatActivity(), AuthListener {
         progressBar.show()
     }
 
-    override fun onSuccess(loginResponse: LiveData<String>) {
-        loginResponse.observe(this, {
-            progressBar.hide()
-            toast(it)
-        })
+    override fun onSuccess(user: User) {
+        toast("${user.name} is logged in")
     }
 
     override fun onError(message: String) {
