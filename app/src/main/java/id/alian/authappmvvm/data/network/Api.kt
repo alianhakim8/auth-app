@@ -10,6 +10,18 @@ import retrofit2.http.POST
 
 interface Api {
 
+    companion object {
+        // same as calling :
+        // Api()
+        operator fun invoke(): Api {
+            return Retrofit.Builder()
+                .baseUrl("http://192.168.1.14:8080/api/v1/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(Api::class.java)
+        }
+    }
+
     @FormUrlEncoded
     @POST("login")
     suspend fun login(
@@ -17,16 +29,6 @@ interface Api {
         @Field("password") password: String
     ): Response<AuthResponse>
 
-    companion object {
-        // same as calling :
-        // Api()
-        operator fun invoke(): Api {
-            return Retrofit.Builder()
-                .baseUrl("https://api.simplifiedcoding.in/course-apis/mvvm/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(Api::class.java)
-        }
-    }
+
 }
 

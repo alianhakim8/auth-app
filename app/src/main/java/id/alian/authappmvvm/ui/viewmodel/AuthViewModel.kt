@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.alian.authappmvvm.data.repository.UserRepository
 import id.alian.authappmvvm.ui.auth.AuthListener
+import id.alian.authappmvvm.utils.ApiException
 import id.alian.authappmvvm.utils.Coroutines
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,14 +20,17 @@ class AuthViewModel : ViewModel() {
     fun onLoginButtonClick(view: View) {
         authListener?.onStarted()
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-            authListener?.onError("Invalid email or password")
+            authListener?.onError("Email or password cannot empty")
         } else {
             Coroutines.main {
-                val response = UserRepository().login(email!!, password!!)
-                if (response.isSuccessful) {
-                    authListener?.onSuccess(response.body()?.user!!)
-                } else {
-                    authListener?.onError("error code : ${response.code()}")
+                try {
+                    val authResponse = UserRepository().login(email!!, password!!)
+                    authResponse.user?.let {
+                        authListener?.onSuccess(authResponse.user)
+                    }
+                    authListener?.onError(authResponse.message!!)
+                } catch (e: ApiException) {
+                    authListener?.onError(e.message!!)
                 }
             }
         }
