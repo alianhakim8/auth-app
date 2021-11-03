@@ -1,15 +1,24 @@
 package id.alian.authappmvvm.data.repository
 
+import id.alian.authappmvvm.data.db.AppDatabase
+import id.alian.authappmvvm.data.db.entities.User
 import id.alian.authappmvvm.data.network.Api
 import id.alian.authappmvvm.data.network.SafeApiRequest
 import id.alian.authappmvvm.data.network.responses.AuthResponse
-import retrofit2.Response
 
-class UserRepository : SafeApiRequest() {
+class UserRepository(
+    private val db: AppDatabase,
+    private val api: Api
+) : SafeApiRequest() {
 
     suspend fun login(email: String, password: String): AuthResponse {
         return apiRequest {
-            Api().login(email, password)
+            api.login(email, password)
         }
     }
+
+    suspend fun saveUser(user: User) = db.getUserDao().upsert(user)
+
+    fun getUser() = db.getUserDao().getUser()
+
 }

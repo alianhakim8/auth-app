@@ -10,7 +10,9 @@ import id.alian.authappmvvm.utils.Coroutines
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(
+    private val repository: UserRepository
+) : ViewModel() {
 
     var email: String? = null
     var password: String? = null
@@ -24,9 +26,10 @@ class AuthViewModel : ViewModel() {
         } else {
             Coroutines.main {
                 try {
-                    val authResponse = UserRepository().login(email!!, password!!)
+                    val authResponse = repository.login(email!!, password!!)
                     authResponse.user?.let {
                         authListener?.onSuccess(authResponse.user)
+                        repository.saveUser(it)
                     }
                     authListener?.onError(authResponse.message!!)
                 } catch (e: ApiException) {
@@ -35,4 +38,6 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
+
+    fun loginSession() = repository.getUser()
 }

@@ -12,7 +12,7 @@ import id.alian.authappmvvm.data.db.entities.User
 interface UserDao {
 
     @Insert(onConflict = REPLACE)
-    fun upsert(user: User): Long
+    suspend fun upsert(user: User): Long
 
     @Query("SELECT * FROM User WHERE uid = $CURRENT_USER_ID")
     fun getUser(): LiveData<User>

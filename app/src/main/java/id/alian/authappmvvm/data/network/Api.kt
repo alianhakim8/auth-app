@@ -15,7 +15,7 @@ interface Api {
         // Api()
         operator fun invoke(): Api {
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.14:8080/api/v1/")
+                .baseUrl("http://192.168.1.11:8080/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(Api::class.java)
