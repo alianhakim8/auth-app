@@ -13,6 +13,7 @@ import id.alian.authappmvvm.R
 import id.alian.authappmvvm.data.db.AppDatabase
 import id.alian.authappmvvm.data.db.entities.User
 import id.alian.authappmvvm.data.network.Api
+import id.alian.authappmvvm.data.network.NetworkConnectionInterceptor
 import id.alian.authappmvvm.data.repository.UserRepository
 import id.alian.authappmvvm.databinding.ActivityLoginBinding
 import id.alian.authappmvvm.ui.home.HomeActivity
@@ -31,7 +32,9 @@ class LoginActivity : AppCompatActivity(), AuthListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val api = Api()
+        // bad practice (class inside class)
+        val networkConnectionInterceptor = NetworkConnectionInterceptor(this)
+        val api = Api(networkConnectionInterceptor)
         val db = AppDatabase(this)
         val repository = UserRepository(db, api)
 
