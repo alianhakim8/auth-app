@@ -1,10 +1,12 @@
 package id.alian.authappmvvm.data.network
 
+import id.alian.authappmvvm.data.db.entities.User
 import id.alian.authappmvvm.data.network.responses.AuthResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -38,6 +40,11 @@ interface Api {
         @Field("password") password: String
     ): Response<AuthResponse>
 
+    @FormUrlEncoded
+    @POST("signup")
+    suspend fun signUp(
+        @Body user: User
+    ): Response<AuthResponse>
 
 }
 

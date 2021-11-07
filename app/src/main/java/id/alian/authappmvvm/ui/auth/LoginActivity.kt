@@ -70,7 +70,6 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
         progressBar.show()
     }
 
-    @SuppressLint("ShowToast")
     override fun onSuccess(user: User) {
         rootLayout.snackbar("${user.name} is logged in")
     }
